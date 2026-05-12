@@ -14,13 +14,6 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'package'
- 
-- script: |
-    echo "Simulating deployment..."
-    mkdir deployed
-    copy target\*.jar deployed\
-    echo "Deployment successful!"
-  displayName: 'Simulate Deployment'
 
 - script: |
     echo Simulating deployment...
