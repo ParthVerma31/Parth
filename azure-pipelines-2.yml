@@ -5,24 +5,35 @@
 
 trigger:
 - main
- 
+
 pool:
   name: pool1
- 
+
 steps:
+
+# BUILD MAVEN PROJECT
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'clean package'
- 
+
+# CREATE DEPLOYMENT FOLDER AND COPY JAR
 - script: |
-    echo "Simulating deployment..."
-    mkdir deployed
+    echo Simulating deployment...
+    cd $(Build.SourcesDirectory)
+
+    if not exist deployed mkdir deployed
+
     copy target\*.jar deployed\
-    echo "Deployment successful!"
+
+    echo Deployment successful!
+
+    echo Contents of deployed folder:
+    dir deployed
   displayName: 'Simulate Deployment'
- 
+
+# RUN THE JAR FILE
 - script: |
-    echo "Running the JAR file..."
-    java -jar deployed\*.jar
+    echo Running the JAR file...
+    java -jar deployed\Maven-1.0-SNAPSHOT.jar
   displayName: 'Run Application'
